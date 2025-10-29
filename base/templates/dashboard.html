@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - {{ usuario.nombre }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <!-- Mensajes flash de éxito -->
+    {% with messages = get_flashed_messages(category_filter=['exito']) %}
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">¡Bienvenid@, {{ usuario.nombre|capitalize }} {{ usuario.apellido|capitalize }}!</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Información de tu cuenta</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Nombre:</strong> {{ usuario.nombre|capitalize }}</li>
+                        <li class="list-group-item"><strong>Apellido:</strong> {{ usuario.apellido|capitalize }}</li>
+                        <li class="list-group-item"><strong>Email:</strong> {{ usuario.email }}</li>
+                        <li class="list-group-item"><strong>Miembro desde:</strong> {{ usuario.creado_en.strftime('%d/%m/%Y') if usuario.creado_en is not none else 'N/A' }}</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-muted center">
+                    <div class="d-flex gap-2">
+                        <a href="/usuarios/editar" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i> Editar Perfil
+                        </a>
+                        <form action="/usuarios/eliminar" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-secondary">Eliminar Cuenta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
